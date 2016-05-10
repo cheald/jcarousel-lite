@@ -232,7 +232,7 @@ $.fn.jCarouselLite = function(o) {
               .append(tLi.slice(0,v).clone());
             o.start += v;
         }
-		
+    	
 		div.hover(function() {
 			div.hovered = true;
 		}, function() {
@@ -255,17 +255,23 @@ $.fn.jCarouselLite = function(o) {
 
         div.css(sizeCss, divSize+"px");                     // Width of the DIV. length of visible images
 
-        if(o.btnPrev)
+        if(o.btnPrev) {
             $(o.btnPrev).click(function() {
 				div.navigated = true;
                 return go(curr-o.scroll);
             });
+            if(!o.circular)
+                if(o.start-o.scroll < 0) $(o.btnPrev).addClass("carousel-prev-disabled");
+        }
 
-        if(o.btnNext)
+        if(o.btnNext) {
             $(o.btnNext).click(function() {
 				div.navigated = true;
                 return go(curr+o.scroll);
             });
+            if(!o.circular)
+                if(o.start+o.scroll > itemLength-v) $(o.btnNext).addClass("carousel-next-disabled");
+        }
 
         if(o.btnGo)
             $.each(o.btnGo, function(i, val) {
@@ -333,6 +339,7 @@ $.fn.jCarouselLite = function(o) {
             return false;
         };
     });
+    
 };
 
 function css(el, prop) {
